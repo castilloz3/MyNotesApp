@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Color de fondo morado (puedes ajustarlo al mismo tono de tu tarjeta) -->
+    <solid android:color="#E1BEE7" />
+
+    <!-- Esquinas redondeadas de 12dp -->
+    <corners android:radius="12dp" />
+
+</shape>

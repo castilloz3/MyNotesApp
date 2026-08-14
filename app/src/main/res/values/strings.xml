@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MyNotes</string>
+    <string name="Ttitle">12 Aug</string>
+    <string name="Date">Today</string>
+    <string name="AddNow">Add Now</string>
+    <string name="TotalTask">6 Task</string>
+    <string name="subTitle">My Tasks</string>
+    <string name="nameNotes">Ir al mercado</string>
+    <string name="descriptionNotes">Comprar vegetales para las lentejas </string>
+    <string name="titleForm">Registra tu nota</string>
+    <string name="titleNoteForm">Titulo de la nota</string>
+    <string name="descriptionNoteForm">Descripcion</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+</resources>
