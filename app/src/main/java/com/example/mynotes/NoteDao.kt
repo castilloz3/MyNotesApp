@@ -8,9 +8,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDao {
 
-    // Traer todas las notas (el Flow hace que si algo cambia en la base, la UI se actualice sola)
+    // Traer todas las notas
     @Query("SELECT * FROM notes_table ORDER BY id DESC")
     fun getAllNotes(): Flow<List<NoteEntity>>
+
+    // Total de notas
+    @Query("SELECT COUNT(*) FROM notes_table")
+    fun getNotesCount(): Flow<Int>
 
     // Insertar una nota nueva
     @Insert
@@ -20,6 +24,7 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(note: NoteEntity)
 
+    // Actualizar nota
     @Update
     suspend fun updateNote(note: NoteEntity)
 }

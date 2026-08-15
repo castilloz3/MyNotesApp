@@ -11,6 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +29,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mostrarFechaActual()
+
 
         noteAdapter = NoteAdapter(
             onDeleteClick = { note -> eliminarNota(note) },
@@ -46,11 +52,11 @@ class MainActivity : AppCompatActivity() {
 
 
         observarNotas()
-
+        observarCantidadNotas()
     }
 
     private fun observarNotas() {
-        // CAMBIO: En lugar de crear un Room.databaseBuilder aquí, llamamos a nuestro singleton
+        // llamamos a nuestro singleton
         val db = AppDatabase.getDatabase(applicationContext)
 
         // Usamos una corrutina para recolectar los datos del Flow
@@ -67,8 +73,35 @@ class MainActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(applicationContext)
         CoroutineScope(Dispatchers.IO).launch {
             db.noteDao().deleteNote(note)
-            // No necesitas actualizar el adapter manualmente:
             // el Flow de getAllNotes() emitirá la lista actualizada automáticamente
+        }
+    }
+
+    private fun mostrarFechaActual() {
+        val fechaActual = Calendar.getInstance().time
+
+        // 1. Día (número) y nombre del mes -> ej: "15 August"
+        val formatoDiaMes = SimpleDateFormat("dd MMMM", Locale.ENGLISH)
+        val diaYMes = formatoDiaMes.format(fechaActual)
+
+        // 2. Nombre del día -> ej: "Saturday"
+        val formatoNombreDia = SimpleDateFormat("EEEE", Locale.ENGLISH)
+        val nombreDia = formatoNombreDia.format(fechaActual)
+
+        binding.tvTitle.text = diaYMes
+        binding.tvDate.text = nombreDia
+    }
+
+    private fun observarCantidadNotas() {
+        val db = AppDatabase.getDatabase(applicationContext)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            db.noteDao().getNotesCount().collectLatest { cantidad ->
+                runOnUiThread {
+                    binding.tvTotal.text = "$cantidad Task"
+
+                }
+            }
         }
     }
 }
